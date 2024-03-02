@@ -15,7 +15,7 @@ func New(s service.Service) *Endpoint {
 	return &Endpoint{s: s}
 }
 
-func (e *Endpoint) Print() {
+func (e *Endpoint) Print() string {
 	c, err := e.s.GetCurr()
 	if err != nil {
 		log.Println(err)
@@ -23,6 +23,6 @@ func (e *Endpoint) Print() {
 	byn, _ := strconv.ParseFloat(c.Rates.BYN, 64)
 	eur, _ := strconv.ParseFloat(c.Rates.EUR, 64)
 	usd, _ := strconv.ParseFloat(c.Rates.USD, 64)
-	fmt.Printf("1 BYN = %.3f EUR\n", 1/eur*byn)
-	fmt.Printf("1 BYN = %.3f USD\n", usd*byn)
+	fmt.Println("D")
+	return fmt.Sprintf("1 BYN = %.3f EUR\n1 BYN = %.3f USD\n", 1/eur*byn, usd*byn)
 }
