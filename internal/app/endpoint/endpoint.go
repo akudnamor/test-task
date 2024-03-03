@@ -15,14 +15,23 @@ func New(s service.Service) *Endpoint {
 	return &Endpoint{s: s}
 }
 
-func (e *Endpoint) Print() string {
-	c, err := e.s.GetCurr()
+func (e *Endpoint) Status() string {
+	c, err := e.s.GetCurrBaseUSD()
 	if err != nil {
 		log.Println(err)
 	}
 	byn, _ := strconv.ParseFloat(c.Rates.BYN, 64)
 	eur, _ := strconv.ParseFloat(c.Rates.EUR, 64)
 	usd, _ := strconv.ParseFloat(c.Rates.USD, 64)
-	fmt.Println("D")
-	return fmt.Sprintf("1 BYN = %.3f EUR\n1 BYN = %.3f USD\n", 1/eur*byn, usd*byn)
+	return fmt.Sprintf("1 EUR = %.3f BYN\n1 USD = %.3f BYN\n", 1/eur*byn, usd*byn)
+}
+
+func (e *Endpoint) Pair(base, symbol string) string {
+	s, err := e.s.GetCurrPair(base, symbol)
+	if err != nil {
+		log.Println(err)
+	}
+	sb, _ := strconv.ParseFloat(s, 64)
+	return fmt.Sprintf("1 %s = %.3f %s", base, sb, symbol)
+
 }
